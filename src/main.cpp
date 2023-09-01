@@ -5,6 +5,22 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 
+#include <Adafruit_GFX.h>
+#include <Adafruit_NeoMatrix.h>
+#include <Adafruit_NeoPixel.h>
+
+#define PIN D6
+Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(32, 8, PIN,
+                            NEO_MATRIX_TOP     + NEO_MATRIX_LEFT +
+                            NEO_MATRIX_COLUMNS + NEO_MATRIX_ZIGZAG,
+                            NEO_GRB            + NEO_KHZ800);
+const uint16_t colors[] = {
+  matrix.Color(255, 0, 0),
+  matrix.Color(0, 255, 0),
+  matrix.Color(0, 255, 255),
+  matrix.Color(254, 1, 121),
+};
+
 // my wifi
 const char* ssid     = "Hoang Yen";
 const char* password = "VNPT123@@2021";
@@ -19,6 +35,11 @@ String timestring(int value);
 
 void setup(){
   Serial.begin(115200);
+  matrix.begin();
+  matrix.setTextWrap(false);
+  matrix.setBrightness(2);
+  matrix.setTextColor(colors[2]);
+  delay(10);
 
   // connect Wifi
   WiFi.begin(ssid, password);
@@ -41,7 +62,13 @@ void loop() {
     String second = timestring(presecond);
     String time = hour + ":" + minutes + ":" + second;
     Serial.println(time);
-  }
+    matrix.fillScreen(0);
+    matrix.setCursor(1, 0);
+    matrix.setTextColor(colors[2]);
+    matrix.print(time);    
+    matrix.show();
+  }  
+  delay(500);            
 }
 
 String timestring(int value){

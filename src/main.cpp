@@ -19,6 +19,8 @@ const uint16_t colors[] = {
   matrix.Color(0, 255, 0),
   matrix.Color(0, 255, 255),
   matrix.Color(254, 1, 121),
+  matrix.Color(244, 72, 167),
+  matrix.Color(220, 163, 0),
 };
 
 // my wifi
@@ -37,7 +39,7 @@ void setup(){
   Serial.begin(115200);
   matrix.begin();
   matrix.setTextWrap(false);
-  matrix.setBrightness(2);
+  matrix.setBrightness(4);
   matrix.setTextColor(colors[2]);
   delay(10);
 
@@ -63,12 +65,12 @@ void loop() {
     String time = hour + ":" + minutes + ":" + second;
     Serial.println(time);
     matrix.fillScreen(0);
-    matrix.setCursor(1, 0);
-    matrix.setTextColor(colors[2]);
+    matrix.setCursor(1, 2);
+    matrix.setTextColor(colors[5]);
     matrix.print(time);    
     matrix.show();
   }  
-  delay(500);            
+  // delay(5000);            
 }
 
 String timestring(int value){

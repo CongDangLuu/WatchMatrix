@@ -6,6 +6,9 @@
 
 #ifndef _GFXFONT_H_
 #define _GFXFONT_H_
+#define CHAR_HEIGHT 6
+#define CHAR_WIDTH	4
+#define BITs(a) (1<<a)
 
 typedef struct { // Data stored PER GLYPH
 	uint16_t bitmapOffset;     // Pointer into GFXfont->bitmap

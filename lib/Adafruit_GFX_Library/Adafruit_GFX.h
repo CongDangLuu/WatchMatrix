@@ -58,12 +58,14 @@ class Adafruit_GFX : public Print {
       int16_t w, int16_t h, uint16_t color),
     drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color,
       uint16_t bg, uint8_t size),
+    drawChar4x6(int16_t x, int16_t y, unsigned char c, uint16_t color,
+      uint16_t bg, uint8_t size),
     setCursor(int16_t x, int16_t y),
     setTextColor(uint16_t c),
-    setTextColor(uint16_t c, uint16_t bg),
+        setTextColor(uint16_t c, uint16_t bg),
     setTextSize(uint8_t s),
     setTextWrap(boolean w),
-    setRotation(uint8_t r),
+        setRotation(uint8_t r),
     cp437(boolean x=true),
     setFont(const GFXfont *f = NULL),
     getTextBounds(char *string, int16_t x, int16_t y,
@@ -100,7 +102,7 @@ class Adafruit_GFX : public Print {
   boolean
     wrap,   // If set, 'wrap' text at right edge of display
     _cp437; // If set, use correct CP437 charset (default is off)
-  GFXfont
+      GFXfont
     *gfxFont;
 };
 

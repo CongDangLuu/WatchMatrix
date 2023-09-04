@@ -38,6 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 #include "Adafruit_GFX.h"
 #include "glcdfont.c"
+#include "Arduino.h"
 
 // Many (but maybe not all) non-AVR board installs define macros
 // for compatibility with existing PROGMEM-reading AVR code.
@@ -82,7 +83,7 @@ Adafruit_GFX::Adafruit_GFX(int16_t w, int16_t h):
   wrap      = true;
   _cp437    = false;
   gfxFont   = NULL;
-}
+  }
 
 // Draw a circle outline
 void Adafruit_GFX::drawCircle(int16_t x0, int16_t y0, int16_t r,
@@ -484,8 +485,16 @@ void Adafruit_GFX::write(uint8_t c) {
         cursor_x  = 0;            // Reset x to zero
         cursor_y += textsize * 8; // Advance y one line
       }
-      drawChar(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize);
-      cursor_x += textsize * 6;
+      // drawChar(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize);
+      // cursor_x += textsize * 6;  
+
+      drawChar4x6(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize);
+      if(c==58){
+        cursor_x +=2;
+      }
+      else{
+        cursor_x += textsize * (CHAR_WIDTH);
+      }        
     }
 
   } else { // Custom font
@@ -513,8 +522,8 @@ void Adafruit_GFX::write(uint8_t c) {
         }
         cursor_x += pgm_read_byte(&glyph->xAdvance) * (int16_t)textsize;
       }
-    }
-
+    } 
+   
   }
 #if ARDUINO >= 100
   return 1;
@@ -526,7 +535,7 @@ void Adafruit_GFX::drawChar(int16_t x, int16_t y, unsigned char c,
  uint16_t color, uint16_t bg, uint8_t size) {
 
   if(!gfxFont) { // 'Classic' built-in font
-
+        
     if((x >= _width)            || // Clip right
        (y >= _height)           || // Clip bottom
        ((x + 6 * size - 1) < 0) || // Clip left
@@ -534,22 +543,22 @@ void Adafruit_GFX::drawChar(int16_t x, int16_t y, unsigned char c,
       return;
 
     if(!_cp437 && (c >= 176)) c++; // Handle 'classic' charset behavior
-
+     
     for(int8_t i=0; i<6; i++ ) {
       uint8_t line;
       if(i < 5) line = pgm_read_byte(font+(c*5)+i);
       else      line = 0x0;
-      for(int8_t j=0; j<8; j++, line >>= 1) {
+            for(int8_t j=0; j<8; j++, line >>= 1) {
         if(line & 0x1) {
-          if(size == 1) drawPixel(x+i, y+j, color);
+           if(size == 1) drawPixel(x+i, y+j, color);
           else          fillRect(x+(i*size), y+(j*size), size, size, color);
-        } else if(bg != color) {
+                  } else if(bg != color) {
           if(size == 1) drawPixel(x+i, y+j, bg);
-          else          fillRect(x+i*size, y+j*size, size, size, bg);
+else          fillRect(x+i*size, y+j*size, size, size, bg);
+            }
+                      }
         }
-      }
-    }
-
+      
   } else { // Custom font
 
     // Character is assumed previously filtered by write() to eliminate
@@ -609,6 +618,41 @@ void Adafruit_GFX::drawChar(int16_t x, int16_t y, unsigned char c,
     }
 
   } // End classic vs custom font
+}
+// Draw a character
+void Adafruit_GFX::drawChar4x6(int16_t x, int16_t y, unsigned char c,
+ uint16_t color, uint16_t bg, uint8_t size) {
+  
+  if((x >= _width)            || // Clip right
+      (y >= _height)           || // Clip bottom
+      ((x + (CHAR_WIDTH +1) * size - 1) < 0) || // Clip left
+      ((y + (CHAR_HEIGHT+1) * size - 1) < 0))   // Clip top
+    return;
+
+  if(!_cp437 && (c >= 176)) c++; // Handle 'classic' charset behavior
+
+  Serial.println("----------------enter for-----------------");
+  Serial.print("Character: ");
+  Serial.print(c); 
+  Serial.print(" - ");
+  Serial.println(c-48); 
+  Serial.print("color: ");
+  Serial.println(color); 
+  Serial.print("x: ");
+  Serial.println(x); 
+  Serial.print("y: ");
+  Serial.println(y); 
+  for(int8_t i=0; i < CHAR_HEIGHT ; i++ ) {
+    uint8_t line = console_font_4x6[(c*CHAR_HEIGHT)+i] >> 4;
+    for (int8_t j = CHAR_WIDTH-1; j >= 0; j--)
+    {
+      // uint8_t BIT = (line & (1<<j)) >> j;
+      if((line & BITs(j)) == BITs(j)){
+        drawPixel(x+3-j, y+i, color);
+      }
+    }    
+  }
+  Serial.println("----------------exit for-----------------\n");
 }
 
 void Adafruit_GFX::setCursor(int16_t x, int16_t y) {

@@ -73,5 +73,5 @@ VOID CmdSetCfg();
 VOID CmdShowWifiCfg();
 VOID CmdConnectWifi();
 VOID CmdHelpdisplay();
-VOID LedStt();
+VOID SerialCommand();
 

@@ -361,3 +361,46 @@ VOID CmdHelpdisplay(){
 
     Serial.println("Note: Command must be in lower case");
 }
+
+VOID SerialCommand(){
+    if (Serial.available())
+    {
+        String cmd = Serial.readStringUntil('\r');
+        Serial.readString(); // remove serial buffer
+        if (cmd == COMMAND_CLEAR)
+        {
+            Serial.println("COMMAND_CLEAR");
+            CmdResetEEPROM();
+        }
+        else if (cmd == COMMAND_ADD)
+        {
+            Serial.println("COMMAND_ADD");
+            digitalWrite(LED, HIGH);
+            CmdSetCfg();
+        }
+        else if (cmd == COMMAND_CONNECT)
+        {
+            Serial.println("COMMAND_CONNECT");
+            CmdConnectWifi();
+        }
+        else if (cmd == COMMAND_AUTO_CONNECT)
+        {
+            Serial.println("COMMAND_AUTO_CONNECT");
+            CmdAutoConnectWifi();
+        }
+        else if (cmd == COMMAND_SHOW)
+        {
+            Serial.println("COMMAND_SHOW");
+            CmdShowWifiCfg();
+        }
+        else if (cmd == COMMAND_HELP)
+        {
+            Serial.println("COMMAND_HELP");
+            CmdHelpdisplay();
+        }
+        else
+        {
+            Serial.println("Command not found");
+        }
+    }
+}

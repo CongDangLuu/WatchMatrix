@@ -8,6 +8,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_NeoMatrix.h>
 #include <Adafruit_NeoPixel.h>
+#include "WifiInfo.h"
 
 #define PIN D6
 Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(32, 8, PIN,
@@ -20,12 +21,11 @@ const uint16_t colors[] = {
   matrix.Color(0, 255, 255),
   matrix.Color(254, 1, 121),
   matrix.Color(244, 72, 167),
-  matrix.Color(220, 163, 0),
+  matrix.Color(210, 162, 20),
+  matrix.Color(250, 170, 20),
 };
+uint8_t colorIndex =6;
 
-// my wifi
-const char* ssid     = "Hoang Yen";
-const char* password = "VNPT123@@2021";
 
 //define server for timeClient
 WiFiUDP ntpUDP;
@@ -40,15 +40,14 @@ void setup(){
   matrix.begin();
   matrix.setTextWrap(false);
   matrix.setBrightness(4);
-  matrix.setTextColor(colors[2]);
+  matrix.setTextColor(colors[colorIndex]);
   delay(10);
 
   // connect Wifi
-  WiFi.begin(ssid, password);
-  while ( WiFi.status() != WL_CONNECTED ) {
-    delay ( 500 );
-    Serial.print ( "." );
-  }
+  pinMode(LED, OUTPUT);
+  digitalWrite(LED, HIGH);
+  EEPROM.begin(EEPROM_SIZE);
+  CmdAutoConnectWifi();
 
   //Starting timeClient
   timeClient.begin();
@@ -56,6 +55,8 @@ void setup(){
 }
 
 void loop() {
+  SerialCommand();
+  
   timeClient.update();
   if (presecond != timeClient.getSeconds()){
     presecond = timeClient.getSeconds();
@@ -63,11 +64,11 @@ void loop() {
     String minutes = timestring(timeClient.getMinutes());
     String second = timestring(presecond);
     String time = hour + ":" + minutes + ":" + second;
-    Serial.println(time);
+    // Serial.println(time);
     matrix.fillScreen(0);
     matrix.setCursor(1, 2);
-    matrix.setTextColor(colors[5]);
-    matrix.print(time);    
+    matrix.setTextColor(colors[colorIndex]);
+    matrix.print(time);
     matrix.show();
   }  
   // delay(5000);            

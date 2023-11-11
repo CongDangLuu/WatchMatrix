@@ -631,17 +631,17 @@ void Adafruit_GFX::drawChar4x6(int16_t x, int16_t y, unsigned char c,
 
   if(!_cp437 && (c >= 176)) c++; // Handle 'classic' charset behavior
 
-  Serial.println("----------------enter for-----------------");
-  Serial.print("Character: ");
-  Serial.print(c); 
-  Serial.print(" - ");
-  Serial.println(c-48); 
-  Serial.print("color: ");
-  Serial.println(color); 
-  Serial.print("x: ");
-  Serial.println(x); 
-  Serial.print("y: ");
-  Serial.println(y); 
+  // Serial.println("----------------enter for-----------------");
+  // Serial.print("Character: ");
+  // Serial.print(c); 
+  // Serial.print(" - ");
+  // Serial.println(c-48); 
+  // Serial.print("color: ");
+  // Serial.println(color); 
+  // Serial.print("x: ");
+  // Serial.println(x); 
+  // Serial.print("y: ");
+  // Serial.println(y); 
   for(int8_t i=0; i < CHAR_HEIGHT ; i++ ) {
     uint8_t line = console_font_4x6[(c*CHAR_HEIGHT)+i] >> 4;
     for (int8_t j = CHAR_WIDTH-1; j >= 0; j--)
@@ -652,7 +652,7 @@ void Adafruit_GFX::drawChar4x6(int16_t x, int16_t y, unsigned char c,
       }
     }    
   }
-  Serial.println("----------------exit for-----------------\n");
+  // Serial.println("----------------exit for-----------------\n");
 }
 
 void Adafruit_GFX::setCursor(int16_t x, int16_t y) {

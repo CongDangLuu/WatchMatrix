@@ -239,6 +239,7 @@ VOID CmdSetCfg(){
         if (Serial.available())
         {
             ssid = Serial.readStringUntil('\r');
+            ssid.trim();
             Serial.readString();//remove serial buffer
             Serial.println("Enter your Wifi password: ");
             while (1)//wait to enter wifi passwork
@@ -246,6 +247,7 @@ VOID CmdSetCfg(){
                 if (Serial.available())
                 {
                     pass = Serial.readStringUntil('\r');
+                    pass.trim();
                     Serial.readString();//remove serial buffer
                     break;
                 }
@@ -329,6 +331,7 @@ VOID CmdConnectWifi(){
         if (Serial.available())
         {
             str = Serial.readStringUntil('\r');
+            str.trim();
             Serial.readString(); // remove serial buffer
             index = str.toInt();
             WifiCfg = ReadCfg(index);
@@ -362,45 +365,3 @@ VOID CmdHelpdisplay(){
     Serial.println("Note: Command must be in lower case");
 }
 
-VOID SerialCommand(){
-    if (Serial.available())
-    {
-        String cmd = Serial.readStringUntil('\r');
-        Serial.readString(); // remove serial buffer
-        if (cmd == COMMAND_CLEAR)
-        {
-            Serial.println("COMMAND_CLEAR");
-            CmdResetEEPROM();
-        }
-        else if (cmd == COMMAND_ADD)
-        {
-            Serial.println("COMMAND_ADD");
-            digitalWrite(LED, HIGH);
-            CmdSetCfg();
-        }
-        else if (cmd == COMMAND_CONNECT)
-        {
-            Serial.println("COMMAND_CONNECT");
-            CmdConnectWifi();
-        }
-        else if (cmd == COMMAND_AUTO_CONNECT)
-        {
-            Serial.println("COMMAND_AUTO_CONNECT");
-            CmdAutoConnectWifi();
-        }
-        else if (cmd == COMMAND_SHOW)
-        {
-            Serial.println("COMMAND_SHOW");
-            CmdShowWifiCfg();
-        }
-        else if (cmd == COMMAND_HELP)
-        {
-            Serial.println("COMMAND_HELP");
-            CmdHelpdisplay();
-        }
-        else
-        {
-            Serial.println("Command not found");
-        }
-    }
-}

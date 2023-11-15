@@ -485,16 +485,23 @@ void Adafruit_GFX::write(uint8_t c) {
         cursor_x  = 0;            // Reset x to zero
         cursor_y += textsize * 8; // Advance y one line
       }
-      // drawChar(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize);
-      // cursor_x += textsize * 6;  
-
-      drawChar4x6(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize);
-      if(c==58){
-        cursor_x +=2;
+      if(fontsize == FONT_SIZE_5x7){
+        drawChar(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize);
+        if(c==0x20){
+          cursor_x +=2;
+        }
+        else{
+          cursor_x += textsize * 6;
+        }
+      }else if(fontsize == FONT_SIZE_4x6){
+        drawChar4x6(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize);
+        if(c==58){
+          cursor_x +=2;
+        }
+        else{
+          cursor_x += textsize * (CHAR_WIDTH);
+        }
       }
-      else{
-        cursor_x += textsize * (CHAR_WIDTH);
-      }        
     }
 
   } else { // Custom font
@@ -670,6 +677,9 @@ int16_t Adafruit_GFX::getCursorY(void) const {
 
 void Adafruit_GFX::setTextSize(uint8_t s) {
   textsize = (s > 0) ? s : 1;
+}
+void Adafruit_GFX::setFontsize(uint8_t s) {
+  fontsize = s;
 }
 
 void Adafruit_GFX::setTextColor(uint16_t c) {

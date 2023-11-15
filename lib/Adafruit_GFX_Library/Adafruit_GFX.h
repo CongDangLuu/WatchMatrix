@@ -9,6 +9,8 @@
 #endif
 
 #include "gfxfont.h"
+#define     FONT_SIZE_4x6   46
+#define     FONT_SIZE_5x7   57
 
 class Adafruit_GFX : public Print {
 
@@ -64,6 +66,7 @@ class Adafruit_GFX : public Print {
     setTextColor(uint16_t c),
         setTextColor(uint16_t c, uint16_t bg),
     setTextSize(uint8_t s),
+    setFontsize(uint8_t s),
     setTextWrap(boolean w),
         setRotation(uint8_t r),
     cp437(boolean x=true),
@@ -98,6 +101,7 @@ class Adafruit_GFX : public Print {
     textcolor, textbgcolor;
   uint8_t
     textsize,
+    fontsize,
     rotation;
   boolean
     wrap,   // If set, 'wrap' text at right edge of display

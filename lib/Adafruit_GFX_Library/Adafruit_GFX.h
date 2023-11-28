@@ -65,6 +65,8 @@ class Adafruit_GFX : public Print {
     setCursor(int16_t x, int16_t y),
     setTextColor(uint16_t c),
         setTextColor(uint16_t c, uint16_t bg),
+    setTextColorRGB(uint8_t r, uint8_t g, uint8_t b),
+    getTextColor(uint8_t *r, uint8_t *g, uint8_t *b),
     setTextSize(uint8_t s),
     setFontsize(uint8_t s),
     setTextWrap(boolean w),
@@ -103,10 +105,12 @@ class Adafruit_GFX : public Print {
     textsize,
     fontsize,
     rotation;
+  uint32_t 
+    color32bit;
   boolean
     wrap,   // If set, 'wrap' text at right edge of display
     _cp437; // If set, use correct CP437 charset (default is off)
-      GFXfont
+          GFXfont
     *gfxFont;
 };
 

@@ -80,10 +80,11 @@ Adafruit_GFX::Adafruit_GFX(int16_t w, int16_t h):
   cursor_y  = cursor_x    = 0;
   textsize  = 1;
   textcolor = textbgcolor = 0xFFFF;
+  color32bit = 0;
   wrap      = true;
   _cp437    = false;
   gfxFont   = NULL;
-  }
+    }
 
 // Draw a circle outline
 void Adafruit_GFX::drawCircle(int16_t x0, int16_t y0, int16_t r,
@@ -685,7 +686,16 @@ void Adafruit_GFX::setFontsize(uint8_t s) {
 void Adafruit_GFX::setTextColor(uint16_t c) {
   // For 'transparent' background, we'll set the bg
   // to the same as fg instead of using a flag
-  textcolor = textbgcolor = c;
+    textcolor = textbgcolor = c;
+}
+void Adafruit_GFX::setTextColorRGB(uint8_t r, uint8_t g, uint8_t b) {
+  color32bit =  ((uint32_t)r << 16) | ((uint32_t)g <<  8) | b;
+}
+void Adafruit_GFX::getTextColor(uint8_t *r, uint8_t *g, uint8_t *b) {
+  *r = (uint8_t)(color32bit >> 16);
+  *g = (uint8_t)(color32bit >> 8);
+  *b = (uint8_t)color32bit;
+  return;
 }
 
 void Adafruit_GFX::setTextColor(uint16_t c, uint16_t b) {

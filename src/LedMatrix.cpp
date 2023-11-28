@@ -14,22 +14,25 @@ const uint16_t colors[] = {
   matrix.Color(250, 170, 20),
 };
 
-int16_t witdh = matrix.width();
+uint8_t r, g, b;
+int16_t cursol = matrix.width();
 
 
 void MatrixSetup()
 {
+    r = 255;
+    g = 0;
+    b = 127;
     matrix.begin();
     matrix.setTextWrap(false);
     matrix.setBrightness(4);
-    matrix.setTextColor(colors[COLOR_INDEX]);
+    matrix.setTextColorRGB(r, g, b);
 }
 
 void MatrixDisplayTime(String str){
     matrix.setFontsize(FONT_SIZE_4x6);
     matrix.fillScreen(0);
     matrix.setCursor(1, 2);
-    matrix.setTextColor(colors[COLOR_INDEX]);
     matrix.print(str);
     matrix.show();
 }
@@ -39,12 +42,15 @@ void MatrixDisplayMessage(String str){
     uint8_t lenbitmap = str.length() *FONT_WIDTH_5x7;
     matrix.setFontsize(FONT_SIZE_5x7);
     matrix.fillScreen(0);
-    matrix.setCursor(witdh, 1);
-    if(--witdh < -lenbitmap){
-      witdh = matrix.width();
-    }
-    matrix.setTextColor(colors[COLOR_INDEX]);
+    if (lenbitmap < 32)
+    {
+      cursol = (int16_t)((32 - lenbitmap)/2) - 1;
+    } else {
+      if(--cursol < -2 * lenbitmap){
+        cursol = matrix.width();
+      }
+    }    
+    matrix.setCursor(cursol, 1);
     matrix.print(str);
     matrix.show();
-    delay(200);
 }

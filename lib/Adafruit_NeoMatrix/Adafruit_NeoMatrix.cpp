@@ -117,7 +117,7 @@ void Adafruit_NeoMatrix::drawPixel(int16_t x, int16_t y, uint16_t color) {
       if((type & NEO_TILE_AXIS) == NEO_TILE_ROWS) {
         majorScale = tilesX;
       } else {
-        swap(major, minor);
+        swap_Adf(major, minor);
         majorScale = tilesY;
       }
 
@@ -154,7 +154,7 @@ void Adafruit_NeoMatrix::drawPixel(int16_t x, int16_t y, uint16_t color) {
     if((type & NEO_MATRIX_AXIS) == NEO_MATRIX_ROWS) {
       majorScale = matrixWidth;
     } else {
-      swap(major, minor);
+      swap_Adf(major, minor);
       majorScale = matrixHeight;
     }
 

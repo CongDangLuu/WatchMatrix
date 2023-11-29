@@ -62,7 +62,7 @@
 #define NEO_TILE_ZIGZAG        0x80 // Tile order reverses between lines
 #define NEO_TILE_SEQUENCE      0x80 // Bitmask for tile line order
 
-#define swap(a, b) { uint8_t t = a; a = b; b = t; }
+#define swap_Adf(a, b) { uint8_t t = a; a = b; b = t; }
 
 class Adafruit_NeoMatrix : public Adafruit_GFX, public Adafruit_NeoPixel {
 

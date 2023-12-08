@@ -3,9 +3,9 @@
 
 
 #define STRING_NULL ""
-
-const char *MessagePath = "http://watchmatrix.000webhostapp.com/Watchmatrix/Message.json";
-const char *SetMessagePhp = "http://watchmatrix.000webhostapp.com/Watchmatrix/SetMessage.php";
+// http://watchmatrix.x10.mx/WatchMatrix/Message.json
+const char *MessagePath = "http://watchmatrix.x10.mx/WatchMatrix/Message.json";
+const char *SetMessagePhp = "http://watchmatrix.x10.mx/WatchMatrix/SetMessage.php";
 HTTPClient http; // Declare object of class HTTPClient
 WiFiClient client;
 String payload, Pre_payload = "";
@@ -200,6 +200,45 @@ void InitMess(){
   Serial.println("InitMess");
   Serial.println("mess.Mess" + mess.Mess);
   Serial.println("mess.State" + mess.State);
-  mess.State = 1;
+  mess.State = 0;
   PostMesage(mess);
+}
+
+
+void LedInfoPost(const char *phplink, String poststring){
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    http.begin(client, phplink);                                         // Specify request destination
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded"); // Specify content-type header
+
+    Serial.println(poststring);
+    int httpCode = http.POST(poststring); // Send the request
+    http.end();
+    if (httpCode == 200)
+    {
+      Serial.println("Status connect gate uploaded successfully.");
+    }
+    else
+    {
+      Serial.println(httpCode);
+      Serial.println("Failed to upload values. \n");
+    }
+  }
+  else
+  {
+    Serial.println("Connect Wifi Error!!!");
+  }
+}
+
+
+String LedInfoGet(const char *Jsonlink){
+  String LedInfo = "";
+  http.begin(client, Jsonlink);     //Specify request destination
+  int httpCode = http.GET(); // Send the request
+  if (httpCode == 200)
+  {
+    LedInfo = http.getString();
+  }
+  http.end(); // close connection with MessagePath
+  return LedInfo;
 }

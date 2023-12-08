@@ -24,3 +24,7 @@ void InitMess();
 void CmdGetMessage();
 void GetMessage();
 void callDisplay();
+
+//
+void LedInfoPost(const char *phplink, String poststring);
+String LedInfoGet(const char *Jsonlink);

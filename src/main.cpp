@@ -23,7 +23,6 @@ VOID SerialCommand();
 
 void setup(){
   Serial.begin(115200);
-  MatrixSetup();
   delay(10);
 
   // connect Wifi
@@ -34,6 +33,7 @@ void setup(){
 
   //Starting timeClient
   TimeClientSetup();
+  MatrixSetup();
   InitMess();
 }
 
@@ -93,6 +93,21 @@ VOID SerialCommand(){
         {
             Serial.println("COMMAND_MESSAGE");
             CmdGetMessage();
+        }
+        else if (cmd == COMMAND_COLOR)
+        {
+            Serial.println("COMMAND_COLOR");
+            CmdSetLedColor();
+        }
+        else if (cmd == COMMAND_BRIGHT)
+        {
+            Serial.println("COMMAND_BRIGHT");
+            CmdSetLedBright();
+        }
+        else if (cmd == COMMAND_GETSERVER)
+        {
+            Serial.println("COMMAND_GETSERVER");
+            CmdGetServer();
         }
         else
         {

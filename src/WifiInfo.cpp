@@ -169,18 +169,19 @@ BOOLEAN ConnectWifi(
 
     Serial.print("           pass: ");
     Serial.println(WifiCfg.pass);
-    while ((WiFi.status() != WL_CONNECTED) && (cnt++ < 10))
+    while ((WiFi.status() != WL_CONNECTED) && (cnt++ < 30))
     {   
         digitalWrite(LED, !digitalRead(LED));
         delay(500);
         Serial.print(".");
     }
     Serial.println();
-    if (cnt < 10){
+    if (cnt < 30){ //20s
         digitalWrite(LED, LOW);
         return true;
     } else {
         digitalWrite(LED, HIGH);
+        WiFi.disconnect();
         return false;
     }
 }
